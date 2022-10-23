@@ -1,4 +1,4 @@
-import fs from 'fs'
+import * as fs from 'fs'
 
 class GameSampleMap {
     // Pourrait-on avoir un décorateur @GameMap() au lieu des deux propriétés ?
@@ -23,13 +23,14 @@ class GameSampleMap {
         // Indiquez les types de retour de resolve, reject, err, val. Vous pouvez le déduire selon le reste du code
         // err est de type Error (type natif en javascript)
         return new Promise((resolve, reject) => {
-            fs.readFile(this.file, (err, val) => {
+            fs.readFile(this.file, { encoding: 'utf8' }, (err, val) => {
                 if (err) {
                     reject(err)
                     return
                 }
-                resolve(val)
-            }, 'utf8')
+                const ret = JSON.parse(val)
+                resolve(ret)
+            })
         })
     }
     
